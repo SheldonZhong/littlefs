@@ -5,19 +5,19 @@
  * SPDX-License-Identifier: BSD-3-Clause
  *
  * Can be overridden by users with their own configuration by defining
- * LFS_CONFIG as a header file (-DLFS_CONFIG=my_lfs_util.h)
+ * LFS_UTIL as a header file (-DLFS_UTIL=my_lfs_util.h)
  *
- * If LFS_CONFIG is defined, none of the default definitions will be
+ * If LFS_UTIL is defined, none of the default definitions will be
  * emitted and must be provided by the user's header file. To start, I would
  * suggest copying lfs_util.h and modifying as needed.
  */
 #ifndef LFS_UTIL_H
 #define LFS_UTIL_H
 
-#ifdef LFS_CONFIG
+#ifdef LFS_UTIL
 #define LFS_STRINGIZE(x) LFS_STRINGIZE2(x)
 #define LFS_STRINGIZE2(x) #x
-#include LFS_STRINGIZE(LFS_CONFIG)
+#include LFS_STRINGIZE(LFS_UTIL)
 #else
 
 // System includes
