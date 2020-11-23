@@ -32,7 +32,7 @@
 #define LFS_CFG_FILE_MAX(lfs)           ((void)lfs, LFS_FILE_MAX)
 #define LFS_CFG_ATTR_MAX(lfs)           ((void)lfs, LFS_ATTR_MAX)
 #else
-// direct config towards dynamic lfs_config struct
+// direct config towards dynamic lfs_cfg struct
 #define LFS_CFG_READ(lfs, block, off, buffer, size) \
     lfs->cfg->read(lfs->cfg, block, off, buffer, size)
 #define LFS_CFG_PROG(lfs, block, off, buffer, size) \
@@ -62,7 +62,7 @@
 #define LFS_FILE_CFG_ATTRS(file)        LFS_FILE_ATTRS
 #define LFS_FILE_CFG_ATTR_COUNT(file)   LFS_FILE_ATTR_COUNT
 #else
-// direct config towards dynamic lfs_config struct
+// direct config towards dynamic lfs_cfg struct
 #define LFS_FILE_CFG_BUFFER(file)       file->cfg->buffer
 #define LFS_FILE_CFG_ATTRS(file)        file->cfg->attrs
 #define LFS_FILE_CFG_ATTR_COUNT(file)   file->cfg->attr_count
@@ -2594,7 +2594,7 @@ cleanup:
 #if !defined(LFS_FILE_STATICCFG)
 int lfs_file_opencfg(lfs_t *lfs, lfs_file_t *file,
         const char *path, int flags,
-        const struct lfs_file_config *cfg) {
+        const struct lfs_file_cfg *cfg) {
     LFS_TRACE("lfs_file_opencfg(%p, %p, \"%s\", %x, %p {"
                  ".buffer=%p, .attrs=%p, .attr_count=%"PRIu32"})",
             (void*)lfs, (void*)file, path, flags,
@@ -2613,7 +2613,7 @@ int lfs_file_open(lfs_t *lfs, lfs_file_t *file,
 #ifdef LFS_FILE_STATICCFG
     int err = lfs_file_opencommon(lfs, file, path, flags);
 #else
-    static const struct lfs_file_config defaults = {0};
+    static const struct lfs_file_cfg defaults = {0};
     int err = lfs_file_opencfg(lfs, file, path, flags, &defaults);
 #endif
     LFS_TRACE("lfs_file_open -> %d", err);
@@ -3732,7 +3732,7 @@ int lfs_format(lfs_t *lfs) {
 #endif
 
 #if !defined(LFS_STATICCFG)
-int lfs_formatcfg(lfs_t *lfs, const struct lfs_config *cfg) {
+int lfs_formatcfg(lfs_t *lfs, const struct lfs_cfg *cfg) {
     LFS_TRACE("lfs_formatcfg(%p, %p {.context=%p, "
                 ".read=%p, .prog=%p, .erase=%p, .sync=%p, "
                 ".read_size=%"PRIu32", .prog_size=%"PRIu32", "
@@ -3893,7 +3893,7 @@ int lfs_mount(lfs_t *lfs) {
 #endif
 
 #if !defined(LFS_STATICCFG)
-int lfs_mountcfg(lfs_t *lfs, const struct lfs_config *cfg) {
+int lfs_mountcfg(lfs_t *lfs, const struct lfs_cfg *cfg) {
     LFS_TRACE("lfs_mountcfg(%p, %p {.context=%p, "
                 ".read=%p, .prog=%p, .erase=%p, .sync=%p, "
                 ".read_size=%"PRIu32", .prog_size=%"PRIu32", "
@@ -5009,7 +5009,7 @@ int lfs_migrate(lfs_t *lfs) {
 #endif
 
 #if !defined(LFS_STATICCFG)
-int lfs_migratecfg(lfs_t *lfs, const struct lfs_config *cfg) {
+int lfs_migratecfg(lfs_t *lfs, const struct lfs_cfg *cfg) {
     LFS_TRACE("lfs_migratecfg(%p, %p {.context=%p, "
                 ".read=%p, .prog=%p, .erase=%p, .sync=%p, "
                 ".read_size=%"PRIu32", .prog_size=%"PRIu32", "
